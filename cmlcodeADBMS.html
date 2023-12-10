@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Information</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        #searchInput {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Book Information</h2>
+
+    <input type="text" id="searchInput" placeholder="Search by title...">
+    <button onclick="searchBooks()">Search</button>
+
+    <table id="bookTable">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th>Publish Date</th>
+            <th>Description</th>
+        </tr>
+    </table>
+
+    <script type="text/xml" id="bookData">
+        <books>
+            <book>
+                <title>Gatsby</title>
+                <author>F. Scott Fitzgerald</author>
+                <genre>Fiction</genre>
+                <price>10.99</price>
+                <publish_date>1925-04-10</publish_date>
+                <description>A novel about the American Jazz Age in the 1920s</description>
+            </book>
+            <book>
+                <title>The</title>
+                <author>F. Scott Fitzgerald</author>
+                <genre>Fiction</genre>
+                <price>10.99</price>
+                <publish_date>1925-04-10</publish_date>
+                <description>A novel about the American Jazz Age in the 1920s</description>
+            </book>
+            <book>
+                <title>deep</title>
+                <author>F. Scott Fitzgerald</author>
+                <genre>Fiction</genre>
+                <price>10.99</price>
+                <publish_date>1925-04-10</publish_date>
+                <description>A novel about the American Jazz Age in the 1920s</description>
+            </book>
+            <book>
+                <title>nensi</title>
+                <author>F. Scott Fitzgerald</author>
+                <genre>Fiction</genre>
+                <price>10.99</price>
+                <publish_date>1925-04-10</publish_date>
+                <description>A novel about the American Jazz Age in the 1920s</description>
+            </book>
+            </books>
+    </script>
+
+    <script>
+
+        var xmlString = document.getElementById('bookData').textContent;
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+
+        // Update HTML table with data
+        var table = document.getElementById("bookTable");
+
+        function renderBooks(books) {
+
+            books.forEach(book => {
+                var row = table.insertRow(-1);
+                ['title', 'author', 'genre', 'price', 'publish_date', 'description'].forEach(field => {
+                    var cell = row.insertCell();
+                    cell.innerHTML = book.querySelector(field).textContent;
+                });
+            });
+        }
+
+        function searchBooks() {
+            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+ 
+            var filteredBooks = Array.from(xmlDoc.querySelectorAll('book')).filter(book => {
+                return book.querySelector('title').textContent.toLowerCase().includes(searchTerm);
+            });
+
+
+            renderBooks(filteredBooks);
+        }
+
+
+        renderBooks(xmlDoc.querySelectorAll('book'));
+    </script>
+
+</body>
+</html>
